@@ -68,8 +68,8 @@ public class GameBoard {
   }
 
   public void initializeGame() {
-    int rowSize = board.length;
-    int colSize = board[0].length;
+    int rowSize = getRowSize();
+    int colSize = getColSize();
 
     for (int row = 0; row < rowSize; row++) {
       for (int col = 0; col < colSize; col++) {

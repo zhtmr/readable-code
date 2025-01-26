@@ -44,8 +44,6 @@ public class Cell {
     this.isOpened = true;
   }
 
-
-
   public boolean isChecked() {
     return isFlagged || isOpened;
   }
