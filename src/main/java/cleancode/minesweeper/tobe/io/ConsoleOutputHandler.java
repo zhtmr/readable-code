@@ -4,6 +4,7 @@ import cleancode.minesweeper.tobe.GameBoard;
 import cleancode.minesweeper.tobe.GameException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ConsoleOutputHandler {
@@ -17,7 +18,6 @@ public class ConsoleOutputHandler {
 
   public void showBoard(GameBoard board) {
     String alphabets = generateColAlphabets(board);
-
     System.out.println("    " + alphabets);
     for (int row = 0; row < board.getRowSize(); row++) {
       System.out.printf("%2d  ", row + 1);
@@ -30,12 +30,16 @@ public class ConsoleOutputHandler {
   }
 
   private String generateColAlphabets(GameBoard board) {
-    List<String> alphabets = IntStream
+    return IntStream
         .range(0, board.getColSize())
-        .mapToObj(index -> (char) ('a' + index))
-        .map(Object::toString)
-        .toList();
-    return String.join(" ", alphabets);
+        .mapToObj(i -> String.valueOf((char) ('a' + i)))
+        .collect(Collectors.joining(" "));
+//    List<String> alphabets = IntStream
+//        .range(0, board.getColSize())
+//        .mapToObj(index -> (char) ('a' + index))
+//        .map(Object::toString)
+//        .toList();
+//    return String.join(" ", alphabets);
   }
 
   public void printGameWinningComment() {
