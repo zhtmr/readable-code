@@ -5,8 +5,6 @@ public abstract class Cell {
   protected static final String FLAG_SIGN = "⚑";
   protected static final String UNCHECKED_SIGN = "□";
 
-
-
   protected boolean isFlagged;
   protected boolean isOpened;
 
