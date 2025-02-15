@@ -70,8 +70,12 @@ public class GameBoard {
     int colSize = getColSize();
     int rowSize = getRowSize();
 
-    return cellPosition.isRowIndexMoreThanOrEqual(rowSize)
-        || cellPosition.isColIndexMoreThanOrEqual(colSize);
+    return cellPosition.isRowIndexMoreThanOrEqual(rowSize) || cellPosition.isColIndexMoreThanOrEqual(colSize);
+  }
+
+  public CellSnapshot getSnapshot(CellPosition cellPosition) {
+    Cell cell = findCell(cellPosition);
+    return cell.getSnapshot();
   }
 
   public void initializeGame() {
@@ -112,11 +116,6 @@ public class GameBoard {
     board[position.getRowIndex()][position.getColIndex()] = cell;
   }
 
-  public String getSign(CellPosition cellPosition) {
-    Cell cell = findCell(cellPosition);
-    return cell.getSign();
-  }
-
   private Cell findCell(CellPosition cellPosition) {
     return board[cellPosition.getRowIndex()][cellPosition.getColIndex()];
   }
@@ -133,7 +132,8 @@ public class GameBoard {
     int rowSize = getRowSize();
     int colSize = getColSize();
 
-    long count = calculateSurroundedPositions(cellPosition, rowSize, colSize).stream()
+    long count = calculateSurroundedPositions(cellPosition, rowSize, colSize)
+        .stream()
         .filter(this::isLandMineCellAt)
         .count();
 
