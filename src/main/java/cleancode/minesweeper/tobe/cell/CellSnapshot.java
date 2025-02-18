@@ -3,11 +3,11 @@ package cleancode.minesweeper.tobe.cell;
 import java.util.Objects;
 
 public class CellSnapshot {
-
   private final CellSnapshotStatus status;
+
   private final int nearbyLandMineCount;
 
-  public CellSnapshot(CellSnapshotStatus status, int nearbyLandMineCount) {
+  private CellSnapshot(CellSnapshotStatus status, int nearbyLandMineCount) {
     this.status = status;
     this.nearbyLandMineCount = nearbyLandMineCount;
   }
@@ -34,6 +34,10 @@ public class CellSnapshot {
 
   public static CellSnapshot ofUnchecked() {
     return of(CellSnapshotStatus.UNCHECKED, 0);
+  }
+
+  public boolean isSameStatus(CellSnapshotStatus cellSnapshotStatus) {
+    return this.status == cellSnapshotStatus;
   }
 
   public CellSnapshotStatus getStatus() {
