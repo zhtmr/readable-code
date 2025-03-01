@@ -12,19 +12,22 @@ public class GameBoard {
 
   private final Cell[][] board;
   private final int landMineCount;
+  private GameStatus gameStatus;
 
   public GameBoard(GameLevel gameLevel) {
     int colSize = gameLevel.getColSize();
     int rowSize = gameLevel.getRowSize();
     board = new Cell[rowSize][colSize];
     landMineCount = gameLevel.getLandMineCount();
+    initializeGamesStatus();
   }
 
   public void flagAt(CellPosition cellPosition) {
     findCell(cellPosition).flag();
+    checkIfGameIsOver();
   }
 
-  public void openAt(CellPosition cellPosition) {
+  public void openOneCellAt(CellPosition cellPosition) {
     findCell(cellPosition).open();
   }
 
@@ -36,7 +39,7 @@ public class GameBoard {
       return;
     }
 
-    openAt(cellPosition);
+    openOneCellAt(cellPosition);
 
     if (doesCellHaveLandMineCount(cellPosition)) {
       return;
@@ -79,6 +82,7 @@ public class GameBoard {
   }
 
   public void initializeGame() {
+    initializeGamesStatus();
     CellPositions cellPositions = CellPositions.from(board);
 
     initializeEmptyCells(cellPositions);
@@ -88,6 +92,10 @@ public class GameBoard {
 
     List<CellPosition> numberPositionCandidates = cellPositions.subtract(landMinePositions);
     initializeNumberCells(numberPositionCandidates);
+  }
+
+  private void initializeGamesStatus() {
+    gameStatus = GameStatus.IN_PROGRESSO;
   }
 
   private void initializeEmptyCells(CellPositions cellPositions) {
@@ -148,5 +156,41 @@ public class GameBoard {
         .filter(position -> position.isRowIndexLessThan(rowSize))
         .filter(position -> position.isColIndexLessThan(colSize))
         .toList();
+  }
+
+  public boolean isInProgress() {
+    return gameStatus == GameStatus.IN_PROGRESSO;
+  }
+
+  private void checkIfGameIsOver() {
+    if (isAllCellChecked()) {
+      changeGameStatusToWin();
+    }
+  }
+
+  private void changeGameStatusToWin() {
+    gameStatus = GameStatus.WIN;
+  }
+
+  private void changeGameStatusToLose() {
+    gameStatus = GameStatus.LOSE;
+  }
+
+  public void openAt(CellPosition cellPosition) {
+    if (isLandMineCellAt(cellPosition)) {
+      openOneCellAt(cellPosition);
+      changeGameStatusToLose();
+      return;
+    }
+    openSurroundedCells(cellPosition);
+    checkIfGameIsOver();
+  }
+
+  public boolean isWinStatus() {
+    return gameStatus == GameStatus.WIN;
+  }
+
+  public boolean isLoseStatus() {
+    return gameStatus == GameStatus.LOSE;
   }
 }
