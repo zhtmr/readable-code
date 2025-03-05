@@ -12,7 +12,7 @@ public class GameApplication {
 //    GameLevel gameLevel = new Beginner();
 //    GameLevel gameLevel = new VeryBeginner();
 //    GameLevel gameLevel = new Middle();
-    GameConfig gameConfig = new GameConfig(new VeryBeginner(), new ConsoleInputHandler(), new ConsoleOutputHandler());
+    GameConfig gameConfig = new GameConfig(new Advanced(), new ConsoleInputHandler(), new ConsoleOutputHandler());
 
     Minesweeper minesweeper = new Minesweeper(gameConfig);
     minesweeper.initialize();
